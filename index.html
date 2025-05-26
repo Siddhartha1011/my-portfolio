@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Animated Panels</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100vh;
+      background: #090909;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .scroll-container {
+      height: 105vh; /* Enable vertical scrolling */
+      position: relative;
+      width: 100vw;
+    }
+
+    .panel {
+      position: absolute;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      border-radius: 12px;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .panel1 {
+      background-color: #383532;
+      z-index: 6;
+      width: 15vw;
+      height: 18vw;
+      animation: panel1Anim 2s ease-out 0s forwards;
+      overflow: hidden;
+    }
+
+    .panel1 img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .panel2 {
+      background-color: #fbf9f3;
+      z-index: 5;
+      width: 15vw;
+      height: 18vw;
+      animation: panel2AnimSizeShiftRight 2s ease-out 0.3s forwards;
+    }
+
+    .panel2 .about-me {
+      color: #090909;
+      opacity: 0;
+      animation: fadeInTextPanel2 1s ease-out 2.4s forwards;
+      font-family: "CaslonOpnface BT", serif;
+      font-style: oblique;
+      padding: 2vw;
+    }
+
+    .panel2 .about-me h2 {
+      font-size: 2.2vw;
+      margin-bottom: 1vw;
+    }
+
+    .panel2 .about-me p {
+      font-size: 1.1vw;
+      line-height: 1.6;
+      margin-bottom: 1.2vw;
+      text-align: justify;
+    }
+
+    .panel3 {
+      background-color: #fbf9f3;
+      z-index: 4;
+      width: 15vw;
+      height: 15vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 2vw;
+      position: relative;
+      overflow: hidden;
+      animation: panel3Anim 2s ease-out 0.6s forwards;
+    }
+
+    .panel3-text {
+      color: #090909;
+      font-size: 2vw;
+      font-weight: bold;
+      font-family: "CaslonOpnface BT", serif;
+      font-style: italic;
+      opacity: 0;
+      animation: textFadeIn 1s ease-out 2.2s forwards;
+    }
+
+    .panel3 .bottom-text {
+      color: #090909;
+      font-size: 2vw;
+      font-weight: bold;
+      text-align: left;
+      padding-left: 1.5vw;
+    }
+    
+    .panel3 .contact-me-text {
+      position: absolute;
+      right: 2vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2vw;
+      font-weight: thin;
+      color: #090909;
+      font-family: "Brush Script MT", cursive;
+      opacity: 0;
+      animation: textFadeIn 1s ease-out 2.2s forwards;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    .panel3 .contact-me-text:hover {
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .panel3 .project-text {
+      position: absolute;
+      right: 12vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2vw;
+      font-weight: thin;
+      color: #090909;
+      font-family: "Brush Script MT", cursive;
+      opacity: 0;
+      animation: textFadeIn 1s ease-out 2.2s forwards;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+.project-text:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+
+    .panel4 {
+      background-color: #383532;
+      z-index: 3;
+      width: 15vw;
+      height: 18vw;
+      animation: panel4AnimSizeShiftRight 2s ease-out 0.9s forwards;
+      padding: 2vw;
+      overflow-y: auto;
+    }
+
+    .panel4 .projects-content {
+      color: #fbf9f3;
+      opacity: 0;
+      animation: fadeInTextPanel4 1s ease-out 3s forwards;
+      font-family: "CaslonOpnface BT", serif;
+    }
+
+    .panel4 .projects-content h2 {
+      font-size: 2.2vw;
+      margin-bottom: 1.5vw;
+      font-style: oblique;
+    }
+
+    .panel4 .project-item {
+      margin-bottom: 1.5vw;
+      padding: 1vw;
+      background: rgba(255, 255, 255, 0.934);
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .panel4 .project-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .panel4 .project-item h3 {
+      font-size: 1.3vw;
+      margin-bottom: 0.5vw;
+      color: #383532;
+      font-family: "CaslonOpnface BT", serif;
+      font-style: oblique;
+      text-align: justify;
+    }
+
+    .panel4 .project-item p {
+      font-size: 0.9vw;
+      line-height: 1.4;
+      color: #090909;
+      margin-bottom: 1vw;
+      font-family: "CaslonOpnface BT", serif;
+      font-style: oblique;
+      text-align: justify;
+    }
+
+    .panel4 .project-detail {
+      font-family: "CaslonOpnface BT", serif;
+      font-style: oblique;
+      color: #090909;
+      font-size: 1vw;
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    .panel4 .project-detail h4 {
+      font-size: 1.3vw;
+      margin-top: 1vw;
+      font-style: italic;
+      font-weight: bold;
+      color: #383532;
+    }
+
+    .panel4 .project-detail ul {
+      margin-left: 1.5vw;
+      margin-top: 0.5vw;
+    }
+
+    .panel4 .project-detail li {
+      margin-bottom: 0.5vw;
+    }
+
+    .panel4 .project-detail a {
+      font-style: normal;
+      font-size: 1vw;
+    }
+
+    .panel4 .hidden {
+      display: none;
+    }
+
+    .panel5 {
+      background-color: #383532;
+      z-index: 2;
+      width: 15vw;
+      height: 18vw;
+      animation: panel5Anim 2s ease-out 1.2s forwards;
+    }
+
+    .panel5 .contact-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: left;
+      height: 100%;
+      gap: 2vw;
+      padding: 2vw;
+    }
+
+    .panel5 .contact-item a {
+      color: white;
+      font-size: 2.5vw;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+
+    .panel5 .contact-item a:hover {
+      transform: scale(1.1);
+    }
+
+    .panel5 .contact-item span {
+      font-size: 1.8vw;
+    }
+
+    .extend-arrow {
+      position: absolute;
+      top: 1vw;
+      right: 1vw;
+      font-size: 1.8vw;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+
+    .extend-arrow:hover {
+      transform: scale(1.2);
+    }
+
+    .panel5 .extra-detail {
+      font-size: 1vw;
+      color: white;
+      opacity: 0.8;
+      margin-left: 3.5vw;
+      margin-top: 0.5vw;
+    }
+
+    .panel5 .hidden {
+      display: none;
+    }
+
+    .panel6 {
+      background-color: #fbf9f3;
+      z-index: 1;
+      width: 15vw;
+      height: 18vw;
+      animation: panel6Anim 2s ease-out 1.2s forwards;
+      padding: 2vw;
+      overflow-y: auto;
+    }
+
+    .panel6 .skills-content {
+      color: #090909;
+      opacity: 0;
+      animation: fadeInTextPanel6 1s ease-out 3.5s forwards;
+      font-family: "CaslonOpnface BT", serif;
+    }
+
+    .panel6 .skills-content h2 {
+      font-size: 2.2vw;
+      margin-bottom: 1.5vw;
+      font-style: oblique;
+    }
+
+    .panel6 .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1vw;
+    }
+
+    .panel6 .skill-item {
+      background: rgba(9, 9, 9, 0.05);
+      padding: 1vw;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5vw;
+    }
+
+    .panel6 .skill-item:hover {
+      transform: scale(1.05);
+    }
+
+    .panel6 .skill-item i {
+      font-size: 1.5vw;
+      color: #383532;
+    }
+
+    .panel6 .skill-item span {
+      font-size: 0.8vw;
+      font-weight: 500;
+      color: #090909;
+    }
+
+    /* Animations */
+    @keyframes panel1Anim {
+      0% {
+        opacity: 0;
+        width: 15vw;
+        height: 18vw;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 21vw;
+        height: 29vw;
+        top: 6vw;
+        transform: translateX(-18.5%);
+      }
+    }
+
+    @keyframes panel2AnimSizeShiftRight {
+      0% {
+        opacity: 0;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 45vw;
+        height: 29vw;
+        top: 6vw;
+        transform: translateX(-110%);
+      }
+    }
+
+    @keyframes fadeInTextPanel2 {
+      from {
+        opacity: 0;
+        transform: translateY(1vw);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes panel3Anim {
+      0% {
+        opacity: 0;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 99vw;
+        height: 5vw;
+        top: 0.5vw;
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes textFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes panel4AnimSizeShiftRight {
+      0% {
+        opacity: 0;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 32vw;
+        height: 52vw;
+        top: 6vw;
+        transform: translateX(55%);
+      }
+    }
+
+    @keyframes fadeInTextPanel4 {
+      from {
+        opacity: 0;
+        transform: translateY(1vw);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes panel5Anim {
+      0% {
+        opacity: 0;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 33vw;
+        height: 22.5vw;
+        top: 35.5vw;
+        transform: translateX(-48%);
+      }
+    }
+     
+    @keyframes panel6Anim {
+      0% {
+        opacity: 0;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+      }
+      100% {
+        opacity: 1;
+        width: 33vw;
+        height: 22.5vw;
+        top: 35.5vw;
+        transform: translateX(-150%);
+      }
+    }
+
+    @keyframes fadeInTextPanel6 {
+      from {
+        opacity: 0;
+        transform: translateY(1vw);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #090909;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #383532;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* Ensure panels maintain exact positions on all screen sizes */
+    @media screen and (max-width: 1920px) and (min-width: 320px) {
+      .panel1, .panel2, .panel3, .panel4, .panel5, .panel6 {
+        /* All animations and positions use vw/vh units, so they scale proportionally */
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="scroll-container">
+    <div class="panel panel6">
+      <div class="skills-content">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-item">
+            <i class="fab fa-python"></i>
+            <span>Python</span>
+          </div>
+          <div class="skill-item">
+            <i class="fas fa-brain"></i>
+            <span>ML/AI</span>
+          </div>
+          <div class="skill-item">
+            <i class="fas fa-eye"></i>
+            <span>Computer Vision</span>
+          </div>
+          <div class="skill-item">
+            <i class="fas fa-database"></i>
+            <span>Data Science</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel5">
+      <div class="extend-arrow" onclick="toggleDetails()">
+        <i class="fas fa-plus"></i>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <a href="mailto:siddharthadchetia@gmail.com" target="_blank">
+            <i class="fas fa-envelope"></i>
+            <span>E-MAIL</span>
+          </a>
+          <div class="extra-detail hidden">siddharthadchetia@gmail.com</div>
+        </div>
+        
+        <div class="contact-item">
+          <a href="tel:+918638198668">
+            <i class="fas fa-phone"></i>
+            <span>CONTACT NO</span>
+          </a>
+          <div class="extra-detail hidden">+91 8638198668</div>
+        </div>
+        
+        <div class="contact-item">
+          <a href="https://github.com/Siddhartha1011" target="_blank">
+            <i class="fab fa-github"></i>
+            <span>GITHUB</span>
+          </a>
+          <div class="extra-detail hidden">Siddhartha1011</div>
+        </div>
+      </div> 
+    </div>
+
+    <div class="panel panel4">
+      <div class="projects-content">
+        <h2>Projects</h2>
+        <div class="project-item" onclick="showProjectDetail(this)">
+          <h3>Movie Recommender</h3>
+          <p>Python-based system that suggests movies based on user input using NLP and cosine similarity.</p>
+          <div class="project-detail hidden">
+            <h4>Description</h4>
+            <p>This project is a content-based movie recommendation system developed in Python. It analyzes user-provided movie titles and recommends similar movies by computing cosine similarity between movie feature vectors derived from textual metadata.</p>
+        
+            <h4>Key Features</h4>
+            <ul>
+              <li>Recommends movies similar to a given title</li>
+              <li>Utilizes TF-IDF vectorization for textual data</li>
+              <li>Calculates cosine similarity for recommendation</li>
+              <li>Processes and analyzes movie metadata</li>
+            </ul>
+        
+            <h4>Workflow</h4>
+            <ul>
+              <li>Load and preprocess the movie dataset</li>
+              <li>Combine relevant features into a single string</li>
+              <li>Convert text data into TF-IDF vectors</li>
+              <li>Compute cosine similarity between movie vectors</li>
+              <li>Sort and display top similar movies based on similarity scores</li>
+            </ul>
+        
+            <h4>Technical Stack</h4>
+            <ul>
+              <li>Language: Python</li>
+              <li>Libraries: Pandas, Scikit-learn, Numpy</li>
+              <li>Techniques: TF-IDF Vectorization, Cosine Similarity</li>
+            </ul>
+        
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Personalized movie recommendations for users on streaming platforms</li>
+              <li>Enhancing user engagement and retention through content discovery</li>
+              <li>Testing and comparing recommendation models in ML workflows</li>
+              <li>Educational tool for demonstrating NLP and vector similarity concepts</li>
+            </ul>
+        
+            <a href="https://github.com/Siddhartha1011/movie-recommender/blob/main/movie_recommender.py" target="_blank" style="display:inline-block;margin-top:1vw;color:#383532;text-decoration:underline;">View Project</a>
+        
+            <br><br>
+            <button onclick="goBackToProjects(event)" style="margin-top:1vw;padding:0.5vw 1vw;border:none;border-radius:5px;background:#383532;color:white;cursor:pointer;">Back</button>
+          </div>
+        </div>
+        
+        <div class="project-item" onclick="showProjectDetail(this)">
+          <h3>AI Job Scraper</h3>
+          <p>Custom Python scraper that automates job listing extraction from LinkedIn using Selenium.</p>
+          <div class="project-detail hidden">
+            <h4>Description</h4>
+            <p>This project automates job search on LinkedIn by navigating the platform, searching based on user-defined criteria, and extracting structured job listing data such as title, company, location, and descriptions.</p>
+        
+            <h4>Key Features</h4>
+            <ul>
+              <li>Searches LinkedIn jobs by keyword and location</li>
+              <li>Extracts titles, companies, locations, and descriptions</li>
+              <li>Saves results to CSV for easy analysis</li>
+              <li>Easily extensible to filter by experience level or job type</li>
+            </ul>
+        
+            <h4>Workflow</h4>
+            <ul>
+              <li>Launch Selenium WebDriver (e.g., ChromeDriver)</li>
+              <li>Navigate to LinkedIn’s job search page</li>
+              <li>Input user-defined keywords and location</li>
+              <li>Iterate through result pages</li>
+              <li>Extract job data using BeautifulSoup or Selenium selectors</li>
+              <li>Save all structured data into a CSV file</li>
+            </ul>
+        
+            <h4>Technical Stack</h4>
+            <ul>
+              <li><strong>Language:</strong>Python</li>
+              <li><strong>Libraries:</strong>Selenium, BeautifulSoup, Pandas, Time</li>
+              <li><strong>Output:</strong>CSV</li>
+            </ul>
+        
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Collect data for job market research and visualization</li>
+              <li>Automate repetitive job search tasks</li>
+              <li>Analyze job trends, role frequency, and requirements</li>
+            </ul>
+        
+            <a href="https://colab.research.google.com/drive/1xrF2rdbyeXdK4qcVsZXmQfrehDeJtetr?usp=drive_link" target="_blank" style="display:inline-block;margin-top:1vw;color:#383532;text-decoration:underline;">View Project</a>
+        
+            <br><br>
+            <button onclick="goBackToProjects(event)" style="margin-top:1vw;padding:0.5vw 1vw;border:none;border-radius:5px;background:#383532;color:white;cursor:pointer;">Back</button>
+          </div>
+        </div>
+        
+        <div class="project-item" onclick="showProjectDetail(this)">
+          <h3>AI Research Agent</h3>
+          <p>Autonomous research assistant designed to retrieve, analyze, and summarize academic content.</p>
+          <div class="project-detail hidden">
+            <h4>Description</h4>
+            <p>The AI Research Agent intelligently searches academic databases, extracts key insights, and summarizes papers using modern NLP techniques. It’s designed to support researchers and students in quickly understanding new topics.</p>
+        
+            <h4>Working</h4>
+            <p>Uses APIs like arXiv or Semantic Scholar to fetch papers based on user input, processes them using NLP models (like BERT/GPT), and outputs summarized key points and metadata.</p>
+        
+            <h4>Workflow</h4>
+            <ul>
+              <li> Input research topic or keyword</li>
+              <li> Fetch relevant papers from APIs</li>
+              <li> Extract and summarize content using NLP</li>
+              <li> Display titles, summaries, and paper links</li>
+            </ul>
+        
+            <h4>Tech Stack</h4>
+            <ul>
+              <li><strong>Languages:</strong> Python</li>
+              <li><strong>Libraries:</strong> BeautifulSoup, spaCy, Transformers, Requests</li>
+              <li><strong>APIs:</strong> arXiv, Semantic Scholar</li>
+              <li><strong>Optional UI:</strong> Flask or Streamlit</li>
+            </ul>
+
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Assisting students with fast literature reviews</li>
+              <li>Helping researchers stay updated with minimal effort</li>
+              <li>Generating summaries for scientific newsletters or blogs</li>
+              <li>Academic search enhancement for educational platforms</li>
+            </ul>
+        
+            <a href="https://github.com/Siddhartha1011/AI-research-agent" target="_blank" style="display:inline-block;margin-top:1vw;color:#383532;text-decoration:underline;">View Project</a>
+        
+            <br><br>
+            <button onclick="goBackToProjects(event)" style="margin-top:1vw;padding:0.5vw 1vw;border:none;border-radius:5px;background:#383532;color:white;cursor:pointer;">Back</button>
+          </div>
+        </div>
+
+        <div class="project-item" onclick="showProjectDetail(this)">
+          <h3>LoRA Image Generation</h3>
+          <p>Trained a diffusion model using LoRA to generate custom images of a specific person from just a few photos.</p>
+          <div class="project-detail hidden">
+            <h4>Description</h4>
+            <p>This project fine-tunes a Stable Diffusion model using LoRA (Low-Rank Adaptation) to generate realistic and stylized images of a specific person. Using as few as 10-15 reference images, the model learns to recreate and synthesize new images of the subject in various poses, settings, and styles.</p>
+        
+            <h4>Key Features</h4>
+            <ul>
+              <li>Fine-tuned Stable Diffusion using PEFT (LoRA)</li>
+              <li>Learns a subject's appearance with few-shot training (10–15 images)</li>
+              <li>Generates high-quality custom images in multiple prompts/styles</li>
+              <li>Training handled via DreamBooth pipeline with LoRA for efficiency</li>
+            </ul>
+        
+            <h4>Workflow</h4>
+            <ul>
+              <li>Collect ~15 photos of a subject (same person, different angles)</li>
+              <li>Preprocess images and caption using BLIP or manual annotations</li>
+              <li>Set up DreamBooth-style training with LoRA on Stable Diffusion</li>
+              <li>Fine-tune using a unique token like "sks person"</li>
+              <li>Generate images using prompts like "a photo of sks person in a forest"</li>
+            </ul>
+        
+            <h4>Technical Stack</h4>
+            <ul>
+              <li><strong>Language:</strong>Python</li>
+              <li><strong>Libraries:</strong>Diffusers, PEFT, Hugging Face Accelerate, Transformers</li>
+              <li><strong>Model:</strong>Stable Diffusion v1.5 with LoRA</li>
+            </ul>
+        
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Custom portrait generation from limited data</li>
+              <li>Research into efficient model personalization</li>
+              <li>Game or avatar character creation</li>
+              <li>Personalized content for social media or branding</li>
+            </ul>
+        
+            <a href="https://colab.research.google.com/drive/1918QychQ01yQQ09NWVk-2aKGVsotHuhA?usp=drive_link" target="_blank" style="display:inline-block;margin-top:1vw;color:#383532;text-decoration:underline;">View Project</a>
+        
+            <br><br>
+            <button onclick="goBackToProjects(event)" style="margin-top:1vw;padding:0.5vw 1vw;border:none;border-radius:5px;background:#383532;color:white;cursor:pointer;">Back</button>
+          </div>
+        </div>
+
+        <div class="project-item" onclick="showProjectDetail(this)">
+          <h3>Medicinal Plant Classification</h3>
+          <p>Developed a machine learning model to classify medicinal plants based on leaf images using traditional feature extraction techniques.</p>
+          <div class="project-detail hidden">
+            <h4>Description</h4>
+            <p>This project focuses on identifying various medicinal plants through images by employing machine learning techniques. The process involves segmentation, grayscale conversion, and advanced feature extraction methods such as GLCM, Gabor, and LBP. Multiple models are trained and evaluated to identify the most suitable one for prediction.</p>
+        
+            <h4>Key Features</h4>
+            <ul>
+              <li>Segmentation using HSV color space to isolate plant regions</li>
+              <li>Grayscale conversion for simplified processing</li>
+              <li>Feature extraction using LBP, GLCM, Gabor filters, and color moments</li>
+              <li>Dimensionality reduction with PCA and normalization with StandardScaler</li>
+              <li>Model training with various algorithms, achieving 99% accuracy with SVM</li>
+            </ul>
+        
+            <h4>Workflow</h4>
+            <ul>
+              <li>Collect and label images of 30 different medicinal plant species</li>
+              <li>Segment images to isolate plant regions using HSV color space</li>
+              <li>Convert segmented images to grayscale</li>
+              <li>Apply Sobel filter to highlight edges</li>
+              <li>Extract features using LBP, GLCM, Gabor filters, and color moments</li>
+              <li>Reduce dimensionality with PCA and normalize features with StandardScaler</li>
+              <li>Train and evaluate multiple models, selecting the best-performing one</li>
+              <li>Use the trained model for real-time prediction on new data</li>
+            </ul>
+        
+            <h4>Technical Stack</h4>
+            <ul>
+              <li><strong>Language:</strong> Python</li>
+              <li><strong>Libraries:</strong> OpenCV, scikit-learn, NumPy, Pandas</li>
+              <li><strong>Techniques:</strong> Image segmentation, feature extraction, dimensionality reduction, machine learning classification</li>
+            </ul>
+        
+            <h4>Use Cases</h4>
+            <ul>
+              <li>Assisting botanists and researchers in identifying medicinal plants</li>
+              <li>Developing mobile applications for plant identification</li>
+              <li>Supporting traditional medicine practices by identifying plant species</li>
+              <li>Educational tools for teaching plant taxonomy and machine learning</li>
+            </ul>
+        
+            <a href="https://github.com/Siddhartha1011/Med-plant-classification" target="_blank" style="display:inline-block;margin-top:1vw;color:#383532;text-decoration:underline;">View Project</a>
+        
+            <br><br>
+            <button onclick="goBackToProjects(event)" style="margin-top:1vw;padding:0.5vw 1vw;border:none;border-radius:5px;background:#383532;color:white;cursor:pointer;">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel3">
+      <div class="panel3-text">
+        <div class="top-text">SIDDHARTHA</div>
+        <div class="bottom-text">DEY CHETIA</div>
+      </div>
+      <div class="project-text" onclick="showRandomProject()">Projects</div>
+      <div class="contact-me-text" onclick="scrollToContact()">Contact Me</div>
+    </div>
+
+    <div class="panel panel2">
+      <div class="about-me">
+        <h2>About Me</h2>
+        <p>Hello! I'm a passionate developer with a strong foundation in Computer Science and Data Science. I love solving real-world problems through technology and design.</p>
+        <p>I specialize in building intelligent systems using Python, Machine Learning, and AI. My work spans a variety of domains including movie recommendation engines, LinkedIn job scrapers, AI research assistants, LoRA-based image generation, and medicinal plant classification.</p>
+        <p>Outside of coding, I enjoy football, collaborating on tech innovations, and exploring new ways to fuse creativity with functionality.</p>
+      </div>
+    </div>
+
+    <div class="panel panel1">
+      <img src="Image.jpeg" alt="Panel 1 Image">
+    </div>
+  </div>
+
+  <script>
+    function toggleDetails() {
+      const details = document.querySelectorAll('.extra-detail');
+      const icon = document.querySelector('.extend-arrow i');
+
+      details.forEach(detail => {
+        detail.classList.toggle('hidden');
+      });
+
+      icon.classList.toggle('fa-plus');
+      icon.classList.toggle('fa-minus');
+    }
+
+    function scrollToContact() {
+    // Scroll to panel 5
+    const panel5 = document.querySelector('.panel5');
+    if (panel5) {
+      panel5.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Check if details are hidden; if so, show them
+    const details = document.querySelectorAll('.panel5 .extra-detail');
+    const icon = document.querySelector('.extend-arrow i');
+
+    const allHidden = Array.from(details).every(el => el.classList.contains('hidden'));
+
+    if (allHidden) {
+      toggleDetails();
+    }
+  }
+
+    // Enable hover after animation finishes
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const contactMe = document.querySelector('.contact-me-text');
+        const projectText = document.querySelector('.project-text');
+
+        if (contactMe) contactMe.style.pointerEvents = 'auto';
+        if (projectText) projectText.style.pointerEvents = 'auto';
+      }, 2300);
+    });
+
+    function showProjectDetail(clickedItem) {
+    const allItems = document.querySelectorAll('.project-item');
+
+    allItems.forEach(item => {
+      if (item !== clickedItem) {
+        item.style.display = 'none';
+      } else {
+        const detail = item.querySelector('.project-detail');
+        if (detail) {
+          detail.classList.remove('hidden');
+        }
+      }
+    });
+  }
+
+
+    function goBackToProjects(event) {
+      event.stopPropagation(); // Prevent the click from re-triggering detail toggle
+
+      const allItems = document.querySelectorAll('.project-item');
+
+      allItems.forEach(item => {
+        item.style.display = 'block';
+        const detail = item.querySelector('.project-detail');
+        if (detail) {
+          detail.classList.add('hidden');
+        }
+      });
+    }
+
+    function showRandomProject() {
+      const allItems = document.querySelectorAll('.project-item');
+      const randomIndex = Math.floor(Math.random() * allItems.length);
+
+      allItems.forEach((item, index) => {
+        const detail = item.querySelector('.project-detail');
+        if (index === randomIndex) {
+          item.style.display = 'block';
+          if (detail) detail.classList.remove('hidden');
+        } else {
+          item.style.display = 'none';
+          if (detail) detail.classList.add('hidden');
+        }
+      });
+
+      const panel4 = document.querySelector('.panel4');
+      if (panel4) {
+        panel4.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+  </script>
+</body>
+</html>
